@@ -32,6 +32,9 @@ app.use('/auth', authRouter);
 app.use('/users', usersRouter);
 app.use('/notifications', notificationsRouter);
 
+app.get('/error-test', (req, res) => {
+  throw new Error('This is a test error for Sentry!');
+});
 
 app.use(defaultNotFoundHandler);
 app.use(globalErrorHandler);
