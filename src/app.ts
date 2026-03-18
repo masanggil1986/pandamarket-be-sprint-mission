@@ -21,6 +21,10 @@ app.use(express.json());
 app.use(cookieParser());
 app.use(STATIC_PATH, express.static(path.resolve(process.cwd(), PUBLIC_PATH)));
 
+app.use('/', (req, res) => {
+  res.json({ message: 'Welcome to the Panda Market API!' });
+});
+
 app.use('/articles', articlesRouter);
 app.use('/products', productsRouter);
 app.use('/comments', commentsRouter);
