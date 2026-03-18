@@ -1,0 +1,25 @@
+name: Test PR to MAIN
+
+on:
+  pull_request:
+    branches:
+      - main # Triggers on PRs targeting the main branch
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: lts/*
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Run tests
+        run: npm test
