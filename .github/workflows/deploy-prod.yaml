@@ -10,7 +10,20 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Deploy to EC2 via SSH
+      - name: Checkout code
+        uses: actions/checkout@v6
+
+      - name: Copy source to EC2 via SCP
+        uses: appleboy/scp-action@v0.1.7
+        with:
+          host: ${{ secrets.EC2_HOST }}
+          username: ${{ secrets.EC2_USER }}
+          key: ${{ secrets.EC2_SSH_KEY }}
+          source: "."
+          target: "/home/ec2-user/pandamarket-be-sprint-mission"
+          overwrite: true
+
+      - name: Deploy on EC2 via SSH
         uses: appleboy/ssh-action@v1.2.0
         with:
           host: ${{ secrets.EC2_HOST }}
@@ -18,9 +31,9 @@ jobs:
           key: ${{ secrets.EC2_SSH_KEY }}
           script: |
             cd /home/ec2-user/pandamarket-be-sprint-mission
-            git pull origin main
             npm install
             npm run build
             npx prisma migrate deploy
             npx prisma generate
-            pm2 restart API
+            pm2 delete API || true
+            pm2 start ./build/main.js --name API
