@@ -1,3 +1,4 @@
+import * as Sentry from '@sentry/node';
 import express from 'express';
 import cors from 'cors';
 import path from 'path';
@@ -16,6 +17,8 @@ import notificationsRouter from './routers/notificationsRouter';
 
 const app = express();
 
+Sentry.setupExpressErrorHandler(app);
+
 app.use(cors());
 app.use(express.json());
 app.use(cookieParser());
@@ -28,6 +31,7 @@ app.use('/images', imagesRouter);
 app.use('/auth', authRouter);
 app.use('/users', usersRouter);
 app.use('/notifications', notificationsRouter);
+
 
 app.use(defaultNotFoundHandler);
 app.use(globalErrorHandler);
