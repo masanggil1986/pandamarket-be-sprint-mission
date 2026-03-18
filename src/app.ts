@@ -17,8 +17,6 @@ import notificationsRouter from './routers/notificationsRouter';
 
 const app = express();
 
-Sentry.setupExpressErrorHandler(app);
-
 app.use(cors());
 app.use(express.json());
 app.use(cookieParser());
@@ -35,6 +33,8 @@ app.use('/notifications', notificationsRouter);
 app.get('/error-test', (req, res) => {
   throw new Error('This is a test error for Sentry!');
 });
+
+Sentry.setupExpressErrorHandler(app);
 
 app.use(defaultNotFoundHandler);
 app.use(globalErrorHandler);
