@@ -9,12 +9,18 @@ RUN npm run build
 
 FROM node:24-alpine AS runner
 
+RUN apk add --no-cache openssl
+
 WORKDIR /app
-COPY --from=builder /build/{package*.json,node_modules,build,prisma} ./
+COPY --from=builder /build/package*.json ./
+COPY --from=builder /build/build ./build
+COPY --from=builder /build/prisma ./prisma
+
+RUN npm ci --only=production
 
 ENV BASE_URL=http://localhost:3000
 ENV PORT=3000
 EXPOSE 3000
 VOLUME /app/public
 
-CMD ["sh", "-c", "npx prisma deploy && npm run start"]
+CMD ["sh", "-c", "npx prisma migrate deploy && npm run start"]
