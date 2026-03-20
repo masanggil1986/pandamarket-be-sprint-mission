@@ -1,4 +1,3 @@
-import * as Sentry from '@sentry/node';
 import express from 'express';
 import cors from 'cors';
 import path from 'path';
@@ -29,12 +28,6 @@ app.use('/images', imagesRouter);
 app.use('/auth', authRouter);
 app.use('/users', usersRouter);
 app.use('/notifications', notificationsRouter);
-
-app.get('/error-test', (req, res) => {
-  throw new Error('This is a test error for Sentry!');
-});
-
-Sentry.setupExpressErrorHandler(app);
 
 app.use(defaultNotFoundHandler);
 app.use(globalErrorHandler);

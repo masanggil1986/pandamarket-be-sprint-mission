@@ -1,4 +1,3 @@
-import * as Sentry from '@sentry/node';
 import { Request, Response, NextFunction } from 'express';
 import { StructError } from 'superstruct';
 import BadRequestError from '../lib/errors/BadRequestError';
@@ -11,7 +10,6 @@ export function defaultNotFoundHandler(req: Request, res: Response, next: NextFu
 }
 
 export function globalErrorHandler(err: Error, req: Request, res: Response, next: NextFunction) {
-  Sentry.captureException(err);
   /** From superstruct or application error */
   if (err instanceof StructError || err instanceof BadRequestError) {
     res.status(400).send({ message: err.message });
