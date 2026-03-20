@@ -2,6 +2,7 @@ name: Test
 
 # PR 이 생성되면 테스트 실행
 on:
+  workflow_dispatch:
   pull_request:
     branches: ['**']
 
@@ -38,6 +39,8 @@ jobs:
           POSTGRES_USER: postgres
           POSTGRES_PASSWORD: postgres
           POSTGRES_DB: panda-market-test
+        ports:
+          - 5432:5432
 
     steps:
       - name: 소스코드 받아오기
